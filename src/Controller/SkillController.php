@@ -10,9 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+#[Route('/api/skills')]
 final class SkillController extends AbstractController
 {
-    #[Route('/api/skills', name: 'app_skills' , methods:['GET'])]
+    #[Route('', name: 'app_skills' , methods:['GET'])]
     public function getSkillList(SkillRepository $skillRepository, SerializerInterface $serializerInterface): JsonResponse
     {
         $skillList = $skillRepository->findAll();
@@ -20,7 +21,7 @@ final class SkillController extends AbstractController
 
         return new JsonResponse($jsonSkillList, Response::HTTP_OK, [], true);
     }
-    #[Route('/api/skills/{id}', name: 'app_skill_detail' , methods:['GET'])]
+    #[Route('/{id}', name: 'app_skill_detail' , methods:['GET'])]
     public function getSkillSlug(Skill $skill, SerializerInterface $serializerInterface): JsonResponse
     {
             $jsonSkill = $serializerInterface->serialize($skill, 'json', ['groups' => "getSkills"]);

@@ -25,7 +25,6 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
         for($i = 0 ; $i < 20 ; $i++ ){
             $skill = new Skill;
-            $skill->setCategory('cat_' . $i);
             $skill->setDescription('des_' . $i);
             $skill->setEvaluation('eva_' . $i);
             $skill->setImgSource('imgSrc_' . $i);
