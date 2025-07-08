@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SkillRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +36,17 @@ class Skill
 
     #[ORM\Column(length: 255)]
     private ?string $imgSource = null;
+
+    /**
+     * @var Collection<int, CategorySkill>
+     */
+    #[ORM\ManyToMany(targetEntity: CategorySkill::class, inversedBy: 'skills')]
+    private Collection $categorySkill;
+
+    public function __construct()
+    {
+        $this->categorySkill = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +133,30 @@ class Skill
     public function setImgSource(string $imgSource): static
     {
         $this->imgSource = $imgSource;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CategorySkill>
+     */
+    public function getCategorySkill(): Collection
+    {
+        return $this->categorySkill;
+    }
+
+    public function addCategorySkill(CategorySkill $categorySkill): static
+    {
+        if (!$this->categorySkill->contains($categorySkill)) {
+            $this->categorySkill->add($categorySkill);
+        }
+
+        return $this;
+    }
+
+    public function removeCategorySkill(CategorySkill $categorySkill): static
+    {
+        $this->categorySkill->removeElement($categorySkill);
 
         return $this;
     }
