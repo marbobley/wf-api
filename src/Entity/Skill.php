@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: SkillRepository::class)]
 class Skill
@@ -14,33 +15,42 @@ class Skill
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getSkills"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getSkills"])]
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getSkills"])]
     private ?string $language = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+    #[Groups(["getSkills"])]
     private ?int $level = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getSkills"])]
     private ?string $yearOfExperience = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getSkills"])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getSkills"])]
     private ?string $evaluation = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getSkills"])]
     private ?string $imgSource = null;
 
     /**
      * @var Collection<int, CategorySkill>
      */
     #[ORM\ManyToMany(targetEntity: CategorySkill::class, inversedBy: 'skills')]
+    #[Groups(["getSkills"])]
     private Collection $categorySkill;
 
     public function __construct()
