@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('api/categories')]
@@ -48,8 +49,21 @@ final class CategorySkillController extends AbstractController
 
         $jsonCategorySkill = $serializerInterface->serialize($categorySkill, 'json', ['groups' => 'getSkills']);
 
-        $location = $urlGeneratorInterface->generate('detailSkill', ['id' => $categorySkill->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $location = $urlGeneratorInterface->generate('app_category_detail', ['id' => $categorySkill->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new JsonResponse($jsonCategorySkill, Response::HTTP_CREATED, ["Location" => $location], true);
+    }
+
+    #[Route('/{id}', name: "app_update_category", methods:['PUT'])]
+    public function updateCategorySkill(Request $request, SerializerInterface $serializerInterface, CategorySkill $currentCategorySkill, EntityManagerInterface $em) : JsonResponse
+    {
+        $updateCategorySkill = $serializerInterface->deserialize($request->getContent(),
+        CategorySkill::class, 
+        'json',
+        [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCategorySkill]);
+
+        $em->persist($updateCategorySkill);
+        $em->flush();
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }
