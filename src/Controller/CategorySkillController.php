@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('api/categories')]
 final class CategorySkillController extends AbstractController
@@ -41,9 +42,17 @@ final class CategorySkillController extends AbstractController
     }
 
     #[Route('', name:'app_create_category', methods:['POST'])]
-    public function createCategorySkill(Request $request, SerializerInterface $serializerInterface, EntityManagerInterface $em, UrlGeneratorInterface $urlGeneratorInterface): JsonResponse
+    public function createCategorySkill(Request $request, SerializerInterface $serializerInterface, EntityManagerInterface $em, UrlGeneratorInterface $urlGeneratorInterface, ValidatorInterface $validatorInterface): JsonResponse
     {
         $categorySkill = $serializerInterface->deserialize($request->getContent(), CategorySkill::class, 'json');
+
+        $errors = $validatorInterface->validate($categorySkill); 
+
+        if($errors->count() > 0)
+        {
+            return new JsonResponse($serializerInterface->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [] , true);
+        }
+
         $em->persist($categorySkill);
         $em->flush();
 

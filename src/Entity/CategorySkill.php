@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorySkillRepository::class)]
 class CategorySkill
@@ -19,10 +20,14 @@ class CategorySkill
 
     #[ORM\Column(length: 255)]
     #[Groups(["getSkills"])]
+    #[Assert\NotBlank(message: "Le nom de la catégorie de compétence est obligatoire")]
+    #[Assert\Length(min: 1, max: 255, minMessage: "Le nom de la catégorie de compétence doit faire au moins {{ limit }} caractères", maxMessage: "Le nom de la catégorie de compétence ne peut pas faire plus de {{ limit }} caractères.")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(["getSkills"])]
+    #[Assert\NotBlank(message: "La description est obligatoire")]
+    #[Assert\Length(min: 1, max: 255, minMessage: "La description doit faire au moins {{ limit }} caractères", maxMessage: "La description ne peut pas faire plus de {{ limit }} caractères.")]
     private ?string $description = null;
 
     /**
