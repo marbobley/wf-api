@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Skill;
 use App\Repository\SkillRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,18 @@ final class SkillController extends AbstractController
         return new JsonResponse($jsonSkillList, Response::HTTP_OK, [], true);
     }
     #[Route('/{id}', name: 'app_skill_detail' , methods:['GET'])]
-    public function getSkillSlug(Skill $skill, SerializerInterface $serializerInterface): JsonResponse
+    public function getSkill(Skill $skill, SerializerInterface $serializerInterface): JsonResponse
     {
             $jsonSkill = $serializerInterface->serialize($skill, 'json', ['groups' => "getSkills"]);
             return new JsonResponse($jsonSkill, Response::HTTP_OK, [] , true);
+    }
+
+    #[Route('/{id}', name: 'app_skill_delete', methods:['DELETE'])]
+    public function deleteSkill(Skill $skill, EntityManagerInterface $em): JsonResponse
+    {
+        $em->remove($skill);
+        $em->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
