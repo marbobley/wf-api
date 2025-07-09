@@ -69,23 +69,21 @@ class AppFixtures extends Fixture
         $cat11->setName('Parler');
         $cat11->setDescription('');
 
-
-        
-            $manager->persist($cat1);
-            $manager->persist($cat2);
-            $manager->persist($cat3);
-            $manager->persist($cat4);
-            $manager->persist($cat5);
-            $manager->persist($cat6);
-            $manager->persist($cat7);
-            $manager->persist($cat8);
-            $manager->persist($cat9);
-            $manager->persist($cat10);
-            $manager->persist($cat11);
+        $manager->persist($cat1);
+        $manager->persist($cat2);
+        $manager->persist($cat3);
+        $manager->persist($cat4);
+        $manager->persist($cat5);
+        $manager->persist($cat6);
+        $manager->persist($cat7);
+        $manager->persist($cat8);
+        $manager->persist($cat9);
+        $manager->persist($cat10);
+        $manager->persist($cat11);
 
         // $product = new Product();
         // $manager->persist($product);
-        for($i = 0 ; $i < 20 ; $i++ ){
+        for ($i = 0; $i < 20; $i++) {
             $skill = new Skill;
             $skill->setDescription('des_' . $i);
             $skill->setEvaluation('eva_' . $i);
@@ -93,7 +91,7 @@ class AppFixtures extends Fixture
             $skill->setLanguage('lang_' . $i);
             $skill->setLevel($i);
             $skill->setYearOfExperience('cat_' . $i);
-            $skill->addCategorySkill( $i % 2 ? $cat1 : $cat2);
+            $skill->addCategorySkill($i % 2 ? $cat1 : $cat2);
 
             $manager->persist($skill);
         }
