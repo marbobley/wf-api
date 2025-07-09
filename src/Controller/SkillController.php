@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/skills')]
 final class SkillController extends AbstractController
@@ -30,6 +31,7 @@ final class SkillController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_skill_delete', methods:['DELETE'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour supprimer une compétences')]
     public function deleteSkill(Skill $skill, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($skill);
