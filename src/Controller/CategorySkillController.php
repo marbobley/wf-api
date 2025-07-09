@@ -19,7 +19,7 @@ use  Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('api/categories')]
 final class CategorySkillController extends AbstractController
 {
-    #[Route('', name: 'app_category' , methods:['GET'])]
+    #[Route('', name: 'app_category', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour voir les catégories de compétences')]
     public function getCategorySkillList(CategorySkillRepository $categorySkillRepository, SerializerInterface $serializerInterface): JsonResponse
     {
@@ -28,13 +28,15 @@ final class CategorySkillController extends AbstractController
 
         return new JsonResponse($jsoncategorySkillList, Response::HTTP_OK, [], true);
     }
-    #[Route('/{id}', name: 'app_category_detail' , methods:['GET'])]
+    #[Route('/{id}', name: 'app_category_detail', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour voir la catégorie de compétences')]
     public function getCategorySkill(CategorySkill $categorySkill, SerializerInterface $serializerInterface): JsonResponse
     {
-            $jsonSkill = $serializerInterface->serialize($categorySkill, 'json', ['groups' => "getSkills"]);
-            return new JsonResponse($jsonSkill, Response::HTTP_OK, [] , true);
+        $jsonSkill = $serializerInterface->serialize($categorySkill, 'json', ['groups' => "getSkills"]);
+        return new JsonResponse($jsonSkill, Response::HTTP_OK, [], true);
     }
-    #[Route('/{id}', name: 'app_category_delete', methods:['DELETE'])]
+    #[Route('/{id}', name: 'app_category_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour supprimer la catégorie de compétences')]
     public function deleteCategorySkill(CategorySkill $categorySkill, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($categorySkill);
@@ -43,16 +45,16 @@ final class CategorySkillController extends AbstractController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    #[Route('', name:'app_create_category', methods:['POST'])]
+    #[Route('', name: 'app_create_category', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour créer une catégorie de compétences')]
     public function createCategorySkill(Request $request, SerializerInterface $serializerInterface, EntityManagerInterface $em, UrlGeneratorInterface $urlGeneratorInterface, ValidatorInterface $validatorInterface): JsonResponse
     {
         $categorySkill = $serializerInterface->deserialize($request->getContent(), CategorySkill::class, 'json');
 
-        $errors = $validatorInterface->validate($categorySkill); 
+        $errors = $validatorInterface->validate($categorySkill);
 
-        if($errors->count() > 0)
-        {
-            return new JsonResponse($serializerInterface->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [] , true);
+        if ($errors->count() > 0) {
+            return new JsonResponse($serializerInterface->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
 
         $em->persist($categorySkill);
@@ -65,13 +67,16 @@ final class CategorySkillController extends AbstractController
         return new JsonResponse($jsonCategorySkill, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
-    #[Route('/{id}', name: "app_update_category", methods:['PUT'])]
-    public function updateCategorySkill(Request $request, SerializerInterface $serializerInterface, CategorySkill $currentCategorySkill, EntityManagerInterface $em) : JsonResponse
+    #[Route('/{id}', name: "app_update_category", methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour mettre à jour la catégorie de compétences')]
+    public function updateCategorySkill(Request $request, SerializerInterface $serializerInterface, CategorySkill $currentCategorySkill, EntityManagerInterface $em): JsonResponse
     {
-        $updateCategorySkill = $serializerInterface->deserialize($request->getContent(),
-        CategorySkill::class, 
-        'json',
-        [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCategorySkill]);
+        $updateCategorySkill = $serializerInterface->deserialize(
+            $request->getContent(),
+            CategorySkill::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCategorySkill]
+        );
 
         $em->persist($updateCategorySkill);
         $em->flush();
