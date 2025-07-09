@@ -45,7 +45,7 @@ class Skill
     /**
      * @var Collection<int, CategorySkill>
      */
-    #[ORM\ManyToMany(targetEntity: CategorySkill::class, inversedBy: 'skills')]
+    #[ORM\ManyToMany(targetEntity: CategorySkill::class, inversedBy: 'skills', cascade:['persist'])]
     #[Groups(["getSkills"])]
     private Collection $categorySkill;
 
@@ -152,6 +152,13 @@ class Skill
     public function removeCategorySkill(CategorySkill $categorySkill): static
     {
         $this->categorySkill->removeElement($categorySkill);
+
+        return $this;
+    }
+
+    public function clearCategorySkills() : static 
+    {
+        $this->categorySkill->clear();
 
         return $this;
     }
