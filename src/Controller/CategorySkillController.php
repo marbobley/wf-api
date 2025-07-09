@@ -14,11 +14,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use  Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('api/categories')]
 final class CategorySkillController extends AbstractController
 {
     #[Route('', name: 'app_category' , methods:['GET'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour voir les catégories de compétences')]
     public function getCategorySkillList(CategorySkillRepository $categorySkillRepository, SerializerInterface $serializerInterface): JsonResponse
     {
         $categorySkillList = $categorySkillRepository->findAll();
