@@ -20,7 +20,6 @@ use  Symfony\Component\Security\Http\Attribute\IsGranted;
 final class CategorySkillController extends AbstractController
 {
     #[Route('', name: 'app_category', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour voir les catégories de compétences')]
     public function getCategorySkillList(CategorySkillRepository $categorySkillRepository, SerializerInterface $serializerInterface): JsonResponse
     {
         $categorySkillList = $categorySkillRepository->findAll();
@@ -29,7 +28,6 @@ final class CategorySkillController extends AbstractController
         return new JsonResponse($jsoncategorySkillList, Response::HTTP_OK, [], true);
     }
     #[Route('/{id}', name: 'app_category_detail', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour voir la catégorie de compétences')]
     public function getCategorySkill(CategorySkill $categorySkill, SerializerInterface $serializerInterface): JsonResponse
     {
         $jsonSkill = $serializerInterface->serialize($categorySkill, 'json', ['groups' => "getSkills"]);
