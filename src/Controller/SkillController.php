@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 #[Route('/api/skills')]
 final class SkillController extends AbstractController
@@ -74,5 +75,22 @@ final class SkillController extends AbstractController
         $location = $urlGeneratorInterface->generate('app_skill_detail', ['id' => $skill->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new JsonResponse($jsonSkill, Response::HTTP_CREATED, ["Location" => $location], true);
+    }
+
+    
+    #[Route('/{id}', name: "app_update_skill", methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous ne possédez pas les droits suffisant pour mettre à jour la compétence')]
+    public function updateSkill(Request $request, SerializerInterface $serializerInterface, Skill $currentSkill, EntityManagerInterface $em): JsonResponse
+    {
+        $updateSkill = $serializerInterface->deserialize(
+            $request->getContent(),
+            Skill::class,
+            'json',
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentSkill]
+        );
+
+        $em->persist($updateSkill);
+        $em->flush();
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }
