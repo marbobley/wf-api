@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use  Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('api/categories')]
+#[Route('categories')]
 final class CategorySkillController extends AbstractController
 {
     #[Route('', name: 'app_category', methods: ['GET'])]

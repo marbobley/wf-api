@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-#[Route('/api/skills')]
+#[Route('skills')]
 final class SkillController extends AbstractController
 {
     #[Route('', name: 'app_skills', methods: ['GET'])]
