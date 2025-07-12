@@ -38,7 +38,7 @@ final class UserController extends AbstractController
         $em->persist($newUser);
         $em->flush();
 
-        $jsonUser = $serializerInterface->serialize($newUser, 'json');
+        $jsonUser = $serializerInterface->serialize($newUser->getId(), 'json');
 
         //$location = $urlGeneratorInterface->generate('app_skill_detail', ['id' => $skill->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
