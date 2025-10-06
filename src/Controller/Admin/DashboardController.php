@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\CategorySkill;
+use App\Entity\Skill;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -27,6 +29,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-camera-retro');
+        yield MenuItem::linkToCrud('Skill', 'fa fa-question-circle', Skill::class);
+        yield MenuItem::linkToCrud('Category', 'fa fa-question-circle', CategorySkill::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }
