@@ -12,3 +12,9 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+migrations/Version20250708095119.php
+
+migrations/Version20250708142649.php
+
+migrations/Version20251002161815.php
