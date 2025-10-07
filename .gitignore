@@ -18,3 +18,8 @@ migrations/Version20250708095119.php
 migrations/Version20250708142649.php
 
 migrations/Version20251002161815.php
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
