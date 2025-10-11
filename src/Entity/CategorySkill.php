@@ -41,6 +41,12 @@ class CategorySkill
         $this->skills = new ArrayCollection();
     }
 
+    public function setId(int $id) : static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -95,5 +101,10 @@ class CategorySkill
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

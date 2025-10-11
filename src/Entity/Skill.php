@@ -18,6 +18,7 @@ class Skill
     #[Groups(["getSkills"])]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 255)]
     #[Groups(["getSkills"])]
     private ?string $language = null;
@@ -57,6 +58,12 @@ class Skill
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
 
@@ -156,10 +163,15 @@ class Skill
         return $this;
     }
 
-    public function clearCategorySkills() : static 
+    public function clearCategorySkills() : static
     {
         $this->categorySkill->clear();
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->language;
     }
 }
